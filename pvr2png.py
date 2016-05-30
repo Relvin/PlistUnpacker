@@ -7,6 +7,11 @@ SUFFIX = ".pvr.ccz"
 def curl_taobao ():
     # curl_init()
     print("")
+def GetTexturePackerPath():
+	if(os.name == 'posix'):
+		return '/usr/local/bin/TexturePacker '
+	else:
+		return 'TexturePacker.exe '
 
 def pvrToPng (_path,OutPath):
 
@@ -18,7 +23,7 @@ def pvrToPng (_path,OutPath):
 
                 if not os.path.exists(os.path.join(_path,OutPath)):
                     os.makedirs(os.path.join(_path,OutPath))
-                cmd = "TexturePacker " + os.path.join(dirpath,filename) + " --sheet " +  _path + OutPath + newFileName + ".png" + " --opt RGBA8888 --allow-free-size --algorithm Basic --no-trim --dither-fs"
+                cmd = GetTexturePackerPath() + os.path.join(dirpath,filename) + " --sheet " +  _path + OutPath + newFileName + ".png" + " --opt RGBA8888 --allow-free-size --algorithm Basic --no-trim --dither-fs"
                 os.system(cmd)
 
     print "pvrToPng"
