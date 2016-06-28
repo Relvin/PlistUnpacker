@@ -15,10 +15,10 @@ def pvrToPng (_path,OutPath):
     for(dirpath, dirnames, filenames) in os.walk(_path):
         for filename in filenames:
             if filename.endswith(SUFFIX):
-                newFileName = filename[0:filename.find(SUFFIX)]
-
+                newFileName = os.path.basename(filename)
                 if not os.path.isabs(OutPath):
                     OutPath = os.path.join(_path,OutPath)
+                # deltaPath = dirpath
                 if not os.path.exists(OutPath):
                     os.makedirs(OutPath)
                 outFileName = os.path.join(OutPath,newFileName + ".png")
