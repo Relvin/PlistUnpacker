@@ -10,19 +10,20 @@ def GetTexturePackerPath():
 	else:
 		return 'TexturePacker.exe '
 
-def pvrToPng (_path,OutPath):
-
+def pvrToPng (_path,_OutPath):
+    OutPath = _OutPath
     for(dirpath, dirnames, filenames) in os.walk(_path):
         for filename in filenames:
             if filename.endswith(SUFFIX):
-                newFileName = os.path.basename(filename)
-                if not os.path.isabs(OutPath):
-                    OutPath = os.path.join(_path,OutPath)
+                basename = os.path.basename(filename)
+                newFileName = basename[0:basename.find(SUFFIX)]
+                if not os.path.isabs(_OutPath):
+                    OutPath = os.path.join(dirpath,_OutPath)
                 # deltaPath = dirpath
                 if not os.path.exists(OutPath):
                     os.makedirs(OutPath)
                 outFileName = os.path.join(OutPath,newFileName + ".png")
-                cmd = GetTexturePackerPath() + os.path.join(dirpath,filename) + " --data pvr2png.plist "  + " --sheet " + outFileName + " --opt RGBA8888 --allow-free-size --algorithm Basic --no-trim --dither-fs"
+                cmd = GetTexturePackerPath() + os.path.join(dirpath,filename) + " --data pvr2png.plist "  + " --sheet " + outFileName + " --opt RGBA8888"
                 os.system(cmd)
     os.remove("pvr2png.plist")
     print "pvrToPng"

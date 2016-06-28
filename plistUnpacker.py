@@ -40,10 +40,10 @@ def tree_to_dict(tree):
                 d[item.text] = tree_to_dict(tree[index+1])
     return d
 def gen_png(plist_filename,png_filename):
-    format = 0
+    format = None
     root = ElementTree.fromstring(open(plist_filename,'r').read())
     plist_dict = tree_to_dict(root[0])
-    if plist_dict["metadata"] and plist_dict["metadata"]["format"]:
+    if plist_dict.has_key("metadata") and plist_dict["metadata"].has_key("format"):
         format = int(plist_dict["metadata"]["format"])
     if format == 0:
         gen_plist_format_2(plist_dict,png_filename)
@@ -53,6 +53,7 @@ def gen_png(plist_filename,png_filename):
         gen_plist_format_3(plist_dict,png_filename)
     print format
     print "gen_png"
+
 def gen_plist_format_1(plist_dict,png_filename):
     baseName = os.path.basename(png_filename)
     baseName = baseName[0:baseName.index('.')]
@@ -101,7 +102,6 @@ def gen_plist_format_2(plist_dict,png_filename):
     file_path = os.path.join(os.path.dirname(png_filename),baseName)
     big_image = Image.open(png_filename)
 
-    print plist_dict
     to_list = lambda x:x.replace('{','').replace('}','').split(',')
     for k,v in plist_dict['frames'].items():
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                 if(os.path.exists(plist_filename) and os.path.exists(png_filename)):
                     gen_png(plist_filename,png_filename)
                 else:
-                    print"make sure you have both plist and png files in the same directory"
+                    print"make sure you have both %s plist and png files in the same directory" %plist_filename
         else:
             if endWith(pathOrFilename,'.plist'):
                 newFileName = pathOrFilename[0:pathOrFilename.find('.plist')]
